@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block stylesheet %}<link rel="stylesheet" href="static/iniciarSesion.css">{% endblock %}
+
+{% block title %}Iniciar Sesión{% endblock %}
+
+{% block body %}
+<div>
+  <h1>Iniciar Sesión</h1>
+  <br>
+  <form id="formularioLogin" action="/">
+    <label for="nombreUsuario">Nombre</label>
+    <input type="text" id="nombreUsuario" placeholder="Escriba aquí..." required autofocus>
+    <br>
+    <label for="contraseñaUsuario">Contraseña</label>
+    <input type="password" id="contraseñaUsuario" placeholder="Escriba aquí..." required>
+    <br><br>
+    <input type="button" value="Iniciar Sesión" onclick="iniciarSesion()">
+  </form>
+  <br><br>
+  <p>¿No tienes cuenta? <a href="{{url_for('registro')}}">Registrate</a></p>
+</div>
+{% endblock %}

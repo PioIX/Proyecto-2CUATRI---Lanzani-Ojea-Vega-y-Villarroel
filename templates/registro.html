@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block stylesheet %}<link rel="stylesheet" href="static/registro.css">{% endblock %}
+
+{% block title %}Registro{% endblock %}
+
+{% block body %}
+<div>
+  <h1>Registro</h1>
+  <br>
+  <form id="formularioRegistro" method="POST" action="/verificarRegistro">
+    <label for="nombre">Nombre</label>
+    <input type="text" id="nombreUsuario" name="nomUsuario" placeholder="Escriba aquí..." required autofocus>
+    <br>
+    <label for="contraseña">Contraseña</label>
+    <input type="password" id="contraseñaUsuario" name="conUsuario" placeholder="Escriba aquí..." required>
+    <br>
+    <select name="carreraUsuario">
+      <option value="Info">Informática</option>
+      <option value="Comu">Comunicación</option>
+      <option value="Tecnica">Técnica</option>
+    </select>
+    <br><br>
+    <input type="submit" id="send-signup" value="Registrarme"/>
+  </form>
+  <br><br>
+  <p>Si ya tenés cuenta, <a href="{{url_for('iniciarSesion')}}">Iniciá Sesión</a></p>
+</div>
+{% endblock %}

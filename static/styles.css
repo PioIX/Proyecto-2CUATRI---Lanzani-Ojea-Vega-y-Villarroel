@@ -1,0 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Comforter+Brush&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400&display=swap');
+
+h1{
+  margin-top: 20px;
+  font-family: 'Comforter Brush', 'sans-serif';
+  font-size: 70px;
+}
+
+p{
+  font-family: 'Raleway', 'sans-serif';
+}
+
+nav{
+  font-family: 'Nunito Sans', 'sans-serif';
+}
