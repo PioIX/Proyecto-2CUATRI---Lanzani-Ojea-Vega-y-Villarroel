@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block stylesheet %}<link rel="stylesheet" href="../static/noticia.css">{% endblock %}
+
+{% block title %}Noticia{% endblock %}
+
+{% block atributosBody %}onload="verificarNoticiaLikeada({{idUsuario}}, {{noticia[0]}})"{% endblock %}
+
+{% block body %}
+<center>
+  <div id="divNoticia">
+    <div class="divFechaNoticia">
+      <p>{{noticia[4][8] + noticia[4][9] + ' ' + '/' + ' ' + noticia[4][5] + noticia[4][6] + ' ' + '/' + ' ' + noticia[4][0] + noticia[4][1] + noticia[4][2] + noticia[4][3]}}</p>
+    </div>
+    <br>
+    <div class="divTituloNoticia">
+      <h1>{{noticia[1]}}</h1>
+    </div>
+    <br>
+    <div class="divContenidoNoticia">
+      <pre style="width:95%;">
+        <h6>{{noticia[2]}}</h6>
+      </pre>
+    </div>
+    <div class="divAutorNoticia">
+      <p>{{noticia[6]}}</p>
+    </div>
+    <div class="barra">
+      <label id="labelLikes" for="corazoncito">{{noticia[3]}}</label>
+      <a id="corazoncito" onclick="darLike({{noticia[0]}}, {{idUsuario}})"><box-icon id="boxIconCorazoncito" class="corazon" color="white" size="md" name='heart'></box-icon></a>
+      <a onclick="mostrarComentarios()"><box-icon class="comentario" color="white" type='solid' size="md" name='message-rounded-dots'></box-icon></a>
+    </div>
+    <br><br><br>
+    <div id="comentarios" class="comentarios"></div>
+  </div>
+</center>
+{% endblock %}

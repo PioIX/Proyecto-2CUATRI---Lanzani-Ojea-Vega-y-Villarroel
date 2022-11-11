@@ -1,3 +1,17 @@
 {% extends 'base.html' %}
 
+{% block stylesheet %}
+<link rel="stylesheet" href="static/styles.css">
+<link rel="stylesheet" href="static/home.css">
+{% endblock %}
+
 {% block title %}Buscar{% endblock %}
+
+{% block atributosBody %}{% endblock %}
+
+{% block body %}
+<div class="field" id="searchform">
+  <input class="buscarNoticia" type="text" id="searchterm" placeholder="Buscar noticia" />
+  <button class="botonBuscarNoticia" type="button" id="search">Buscar</button>
+</div>
+{% endblock %}

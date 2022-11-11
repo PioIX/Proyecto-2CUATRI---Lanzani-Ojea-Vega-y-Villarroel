@@ -1,5 +1,97 @@
-@import url('https://fonts.googleapis.com/css2?family=Asap&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Shadows+Into+Light&display=swap');
+
+*{
+  color: black;
+  margin: 0;
+  padding: 0;
+}
 
 body{
-  font-family: 'Asap', 'sans-serif';
+  width: 100vw;
+  height: 100vh;
+  background-attachment: fixed;
+}
+
+.inicioSesion{
+  color: black;
+  font-family: 'Shadows Into Light', 'sans-serif';
+  font-size: 50px;
+}
+
+.botonRegistro:link{
+  color: black;
+}
+
+.botonRegistro:visited{
+  color: black;
+}
+
+.registrarse{
+  color: black;
+}
+
+.labelsInicioSesion{
+  color: black;
+  font-family: 'Nunito Sans', 'sans-serif';
+}
+
+.izquierda{
+  align-items: left;
+}
+
+.dropdown-toggle{
+  background-color: #000000;
+  color: white;
+}
+
+.dropdown-toggle:hover{
+  background-color: #000000;
+  color: white;
+}
+
+h3{
+  text-align: center;
+  margin-top: 10px;
+}
+
+.inputLogin{
+  self-align: center;
+  display: flex;
+  padding: 0% 18%;
+  justify-content: space-between;
+}
+
+.inputLogin input{
+  border-radius: 6px;
+  border: 1px solid white;
+}
+
+.modal-content{
+  background-color: rgba(0, 0, 0, .9);
+  border-radius: 15px;
+}
+
+.modal-content h3, .modal-content p{
+  color: white;
+}
+
+.modal-content a:link, .modal-content a:visited{
+  color: white;
+  text-decoration: underline;
+}
+
+
+#botonIniciarSesion{
+  border: 2px solid white;
+  border-radius: 20px;
+  color: white;
+  text-decoration: none;
+  padding: 8px 60px;
+}
+
+#botonIniciarSesion:hover{
+  background-color: white;
+  color: black;
 }

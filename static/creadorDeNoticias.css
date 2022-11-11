@@ -1,0 +1,122 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Shadows+Into+Light&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Comforter+Brush&display=swap');
+
+body{
+  width: 100vw;
+  height: 100vh;
+  background-image: url("./img/patioPioDark.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+h1{
+  font-family: 'Comforter Brush', 'sans-serif';
+  font-size: 100px;
+  color: white;
+  margin-top: 40px;
+  text-align: center;
+}
+
+p{
+  color: white;
+}
+
+label{
+  color: white;
+}
+
+form{
+  font-family: 'Nunito Sans', 'sans-serif';
+  displa
+}
+
+nav{
+  position: relative;
+  font-family: 'Nunito Sans', 'sans-serif';
+  background-color: rgba(0, 0, 0, .5);
+}
+
+.nav-tabs .nav-item .nav-link.active{
+  background-color: #0f0f0f;
+  color: #FFF;
+}
+
+.nav-tabs .nav-item .nav-link:hover{
+  color: grey;
+}
+
+a:link{
+  color: white;
+}
+
+a:visited{
+  color: white;
+}
+
+.derecha{
+  position: absolute;
+  right: 0;
+}
+
+.labelNuevaNoticia{
+  margin-right: 20px;
+}
+
+.nombreUsuario:link{
+  color: black;
+}
+
+select{
+  background: inherit;
+  border: 1px solid #ababab;
+  border-radius: 5px;
+  color: white;
+  padding: 4px 6px;
+}
+
+.input{
+  max-width: 80%;
+  display: inline-block;
+  border: 1px solid #ababab;
+  border-radius: 5px;
+  color: black;
+  padding: 4px 6px;
+}
+
+.inputRegistro{
+  display: flex;
+  width: 50%;
+  justify-content: space-between;
+}
+
+
+
+span[contenteditable]:empty:focus::before, span[contenteditable]:empty::before{
+  content: 'Escriba aquí...';
+}
+
+#botonAgregarNoticia{
+  background: inherit;
+  border: 1px solid white;
+  border-radius: 5px;
+  color: white;
+  padding: 6px 10px;
+}
+
+#botonAgregarNoticia:hover{
+  background-color: white;
+  color: #383838
+}
+
+#divRegistro{
+  width: 50vw;
+  height: calc(100vh - 42px);
+  position: absolute;
+  top: 42px;
+  left: 50%;
+  margin: 0;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, .5);
+}

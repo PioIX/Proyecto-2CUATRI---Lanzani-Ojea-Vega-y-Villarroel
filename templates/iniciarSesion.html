@@ -4,20 +4,28 @@
 
 {% block title %}Iniciar Sesión{% endblock %}
 
+{% block atributosBody %}{% endblock %}
+
 {% block body %}
-<div>
-  <h1>Iniciar Sesión</h1>
-  <br>
-  <form id="formularioLogin" action="/">
-    <label for="nombreUsuario">Nombre</label>
-    <input type="text" id="nombreUsuario" placeholder="Escriba aquí..." required autofocus>
-    <br>
-    <label for="contraseñaUsuario">Contraseña</label>
-    <input type="password" id="contraseñaUsuario" placeholder="Escriba aquí..." required>
+<center>
+  <div class="formInicio">
+    <h1 class="tituloInicioSesion">Iniciar Sesión</h1>
     <br><br>
-    <input type="button" value="Iniciar Sesión" onclick="iniciarSesion()">
-  </form>
-  <br><br>
-  <p>¿No tienes cuenta? <a href="{{url_for('registro')}}">Registrate</a></p>
-</div>
+    <form id="formularioLogin" action="/">
+      <div class="inputLogin">
+        <label for="nombreUsuario">Nombre</label>
+        <input type="text" id="nombreUsuario" placeholder="Escriba aquí..." required autofocus>
+      </div>
+      <br>
+      <div class="inputLogin">
+        <label for="contraseñaUsuario">Contraseña</label>
+        <input type="password" id="contraseñaUsuario" placeholder="Escriba aquí..." required>
+      </div>
+      <br><br>
+      <input type="button" value="Iniciar Sesión" onclick="iniciarSesion()">
+    </form>
+    <br><br>
+    <p>¿No tienes cuenta? <a href="{{url_for('registro')}}">Registrate</a></p>
+  </div>
+</center>
 {% endblock %}

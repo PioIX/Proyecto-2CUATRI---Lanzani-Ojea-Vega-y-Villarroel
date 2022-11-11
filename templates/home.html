@@ -1,7 +1,31 @@
 {% extends 'base.html' %}
 
+{% block stylesheet %}
+<link rel="stylesheet" href="static/home.css">
+<style id="etiquetaStyleHome"></style>
+{% endblock %}
+
 {% block title %}Home{% endblock %}
 
+{% block atributosBody %}onload="obtenerNoticias()"{% endblock %}
+
 {% block body %}
-<p>{{session['nombre']}}</p>
+<center>
+  <div id="divHome">
+    <br><br>
+    {% if session['nombre'] == 'admin' %}
+    <h1 id="tituloAdmin">Noticias</h1>
+    <div class="botones">
+      <a id="botonNuevaNoticia" href="{{url_for('creadorDeNoticias')}}">Nueva Noticia</a>
+      <a id="botonEditarNoticia" href="">Editar Noticia</a>
+      <a id="botonEliminarNoticia" onclick="seleccionarFuncionEliminar()">Eliminar Noticia</a>
+    </div>
+    <br><br><br>
+    {% else %}
+      <h1 id="tituloNoAdmin">Noticias</h1>
+    {% endif %} 
+      <section id="sectionNoticias" class="noticias"></section>
+    </div>
+  </div>
+</center>
 {% endblock %}

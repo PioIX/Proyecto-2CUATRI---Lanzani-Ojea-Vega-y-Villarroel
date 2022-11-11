@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block stylesheet %}<link rel="stylesheet" href="static/creadorDeNoticias.css">{% endblock %}
+
+{% block title %}Creador de Noticias{% endblock %}
+
+{% block atributosBody %}{% endblock %}
+
+{% block body %}
+<center>
+  <div style="margin-left:25px;">
+    <div id="divRegistro">
+      <h1>Creador de Noticias</h1>
+      <br>
+      <form id="formNuevaNoticia" method="POST" action="/creadorDeNoticias">
+        <div class="inputRegistro">
+          <label for="categoria" class="labelNuevaNoticia">Categoría</label>
+          <select id="categoria" name="categoria">
+            <option value="institucional">Institucional</option>
+            <option value="ateneo">Ateneo</option>
+            <option value="ods">ODS</option>
+          </select>
+        </div>
+        <br>
+        <div class="inputRegistro">
+          <label for="titulo" class="labelNuevaNoticia" style="margin-right:47px;">Título</label>
+          <span id="titulo" class="input" role="textbox" name="titulo" contenteditable></span>
+        </div>
+        <br>
+        <div class="inputRegistro">
+          <label for="contenido" class="labelNuevaNoticia" style="margin-right:16px;">Contenido</label>
+          <span id="contenido" class="input" role="textbox" name="contenido" contenteditable></span>
+        </div>
+        <br>
+        <div class="inputRegistro">
+          <label for="autor" class="labelNuevaNoticia" style="margin-right:48px;">Autor</label>
+          <input type="text" id="autor" name="autor" placeholder="Firma del autor...">
+        </div>
+        <br><br>
+        <input id="botonAgregarNoticia" type="button" value="Agregar Noticia" onclick="agregarNuevaNoticia()">
+      </form>
+    </div>
+  </div>
+</center>
+{% endblock %}

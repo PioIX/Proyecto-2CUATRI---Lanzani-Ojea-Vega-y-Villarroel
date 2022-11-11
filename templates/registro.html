@@ -1,29 +1,46 @@
 {% extends 'base.html' %}
 
-{% block stylesheet %}<link rel="stylesheet" href="static/registro.css">{% endblock %}
+{% block stylesheet %}<link rel="stylesheet" href="static/registro.css">
+<link rel="stylesheet" href="static/home.css">
+{% endblock %}
 
 {% block title %}Registro{% endblock %}
 
+{% block atributosBody %}{% endblock %}
+
 {% block body %}
-<div>
-  <h1>Registro</h1>
-  <br>
-  <form id="formularioRegistro" method="POST" action="/verificarRegistro">
-    <label for="nombre">Nombre</label>
-    <input type="text" id="nombreUsuario" name="nomUsuario" placeholder="Escriba aquí..." required autofocus>
+<center>
+  <div id="divRegistro">
     <br>
-    <label for="contraseña">Contraseña</label>
-    <input type="password" id="contraseñaUsuario" name="conUsuario" placeholder="Escriba aquí..." required>
-    <br>
-    <select name="carreraUsuario">
-      <option value="Info">Informática</option>
-      <option value="Comu">Comunicación</option>
-      <option value="Tecnica">Técnica</option>
-    </select>
+    <h1>Registro</h1>
     <br><br>
-    <input type="submit" id="send-signup" value="Registrarme"/>
-  </form>
-  <br><br>
-  <p>Si ya tenés cuenta, <a href="{{url_for('iniciarSesion')}}">Iniciá Sesión</a></p>
-</div>
+    <form id="formularioRegistro" method="POST" action="/verificarRegistro">
+      <div class="inputRegistro">
+        <label for="nombreUsuarioRegistro">Nombre</label>
+        <input type="text" id="nombreUsuarioRegistro" name="nomUsuario" placeholder="Escriba aquí..." required autofocus>
+      </div>
+      <br>
+      <div class="inputRegistro">
+        <label for="contraseñaUsuarioRegistro">Contraseña</label>
+        <input type="password" id="contraseñaUsuarioRegistro" name="conUsuario" placeholder="Escriba aquí..." required>
+      </div>
+      <br>
+      <div class="inputRegistro">
+        <label for="confirmarContraseñaUsuarioRegistro">Confirmar contraseña</label>
+        <input type="password" id="confirmarContraseñaUsuarioRegistro" name="confirmarConUsuario" placeholder="Repita su contraseña..." required>
+      </div>
+      <br>
+      <div class="inputRegistro">
+        <label for="carreraUsuario">Carrera</label>
+        <select id="carreraUsuario" name="carreraUsuario">
+          <option class="carrera" value="Info">Informática</option>
+          <option class="carrera" value="Comu">Comunicación</option>
+          <option class="carrera" value="Tecnica">Técnica</option>
+        </select>
+      </div>
+      <br><br>
+      <input type="button" id="send-signup" value="Registrarme" onclick="coincidirContraseñas()"/>
+    </form>
+  </div>
+</center>
 {% endblock %}
