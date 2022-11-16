@@ -1,12 +1,10 @@
 {% extends 'base.html' %}
 
-{% block stylesheet %}<link rel="stylesheet" href="static/registro.css">
-<link rel="stylesheet" href="static/home.css">
-{% endblock %}
+{% block stylesheet %}<link rel="stylesheet" href="../../../../../static/registro.css">{% endblock %}
 
 {% block title %}Registro{% endblock %}
 
-{% block atributosBody %}{% endblock %}
+{% block atributosBody %}onload="mensajeNombreUsuarioYaUsado({{mensaje}})"{% endblock %}
 
 {% block body %}
 <center>
@@ -42,5 +40,54 @@
       <input type="button" id="send-signup" value="Registrarme" onclick="coincidirContraseñas()"/>
     </form>
   </div>
+
+    <div class="modal" tabindex="-1" id="modalRegistroCamposNoCompletados">
+      <div class="modal-dialog">
+        <div class="modal-content" id="modalContentRegistroCamposNoCompletados">
+          <div class="modal-header">
+            <h5 class="modal-title text-white">Error</h5>
+          </div>
+          <div class="modal-body">
+            <p class="text-light">No se completaron todos los campos</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary btn-success" data-bs-dismiss="modal">Aceptar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal" tabindex="-1" id="modalRegistroContraseñasNoCoinciden">
+      <div class="modal-dialog">
+        <div class="modal-content" id="modalContentRegistroContraseñasNoCoinciden">
+          <div class="modal-header">
+            <h5 class="modal-title text-white">Error</h5>
+          </div>
+          <div class="modal-body">
+            <p class="text-light">Las contraseñas no coinciden</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary btn-success" data-bs-dismiss="modal">Aceptar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal" tabindex="-1" id="modalRegistroNombreYaTomado">
+      <div class="modal-dialog">
+        <div class="modal-content" id="modalContentRegistroNombreYaTomado">
+          <div class="modal-header">
+            <h5 class="modal-title text-white">Error</h5>
+          </div>
+          <div class="modal-body">
+            <p class="text-light">El nombre ya fue tomado por otro usuario</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary btn-success" data-bs-dismiss="modal">Aceptar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  
 </center>
 {% endblock %}

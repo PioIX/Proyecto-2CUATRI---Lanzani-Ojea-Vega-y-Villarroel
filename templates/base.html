@@ -52,7 +52,7 @@
                               </form>
                               <br><br>
                               <center>
-                                <p class="registrarse">¿No tienes cuenta? <a class="botonRegistro" href="{{url_for('registro')}}">Registrate</a></p>
+                                <p class="registrarse">¿No tienes cuenta? <a class="botonRegistro" href="{{url_for('registro', mensaje = 0)}}">Registrate</a></p>
                               </center>
                               <br>
                             </div>
@@ -79,6 +79,21 @@
   <div class="fondo">
     <br>
     {% block body %}{% endblock %}
+    <div class="modal" tabindex="-1" id="modalUsuarioOContraseñaIncorrectos">
+      <div class="modal-dialog">
+        <div class="modal-content" id="modalContentUsuarioOContraseñaIncorrectos">
+          <div class="modal-header">
+            <h5 class="modal-title text-white">Error</h5>
+          </div>
+          <div class="modal-body">
+            <p class="text-light">El nombre o contraseña ingresados son incorrectos</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary btn-success" data-bs-dismiss="modal">Aceptar</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

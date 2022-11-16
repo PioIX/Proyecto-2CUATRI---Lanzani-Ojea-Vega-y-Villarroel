@@ -3,7 +3,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Shadows+Into+Light&display=swap');
 
 *{
-  color: black;
   margin: 0;
   padding: 0;
 }
@@ -94,4 +93,8 @@ h3{
 #botonIniciarSesion:hover{
   background-color: white;
   color: black;
+}
+
+#modalContentUsuarioOContraseñaIncorrectos {
+  border: 1px solid white;
 }

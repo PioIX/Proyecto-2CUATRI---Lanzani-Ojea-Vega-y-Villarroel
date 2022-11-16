@@ -37,10 +37,6 @@ form{
   font-family: 'Nunito Sans', 'sans-serif';
 }
 
-div{
-  margin-left: 20px;
-}
-
 nav{
   position: relative;
   font-family: 'Nunito Sans', 'sans-serif';
@@ -93,5 +89,13 @@ a:visited{
   left: 50%;
   margin: 0;
   transform: translateX(-50%);
-  background-color: rgba(0, 0, 0, .5);
+  background-color: rgba(0, 0, 0, .8);
+}
+
+#modalContentRegistroCamposNoCompletados {
+  border: 1px solid white;
+}
+
+#modalContentRegistroContraseñasNoCoinciden{
+  border: 1px solid white;
 }

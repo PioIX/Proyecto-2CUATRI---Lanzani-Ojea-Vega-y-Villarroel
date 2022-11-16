@@ -11,7 +11,7 @@ function iniciarSesion(){
         document.getElementById("formularioLogin").submit();
       }
       else{
-        alert("El nombre o contraseña ingresados son incorrectos");
+        modalUsuarioOContraseñaIncorrectos = $('#modalUsuarioOContraseñaIncorrectos').modal('toggle');
       }
     },
     error: function(error){
@@ -25,14 +25,14 @@ function coincidirContraseñas(){
   contraseñaUsuarioRegistro = document.getElementById("contraseñaUsuarioRegistro").value;
   confirmarContraseñaUsuarioRegistro = document.getElementById("confirmarContraseñaUsuarioRegistro").value;
   if (nombreUsuarioRegistro == "" || contraseñaUsuarioRegistro == "" || confirmarContraseñaUsuarioRegistro == ""){
-    alert("No se completaron todos los campos")
+    modalRegistroCamposNoCompletados = $('#modalRegistroCamposNoCompletados').modal('toggle');
   }
   else{
     if (contraseñaUsuarioRegistro == confirmarContraseñaUsuarioRegistro){
       document.getElementById("formularioRegistro").submit();
     }
     else{
-      alert("Las contraseñas no coinciden");
+      modalRegistroContraseñasNoCoinciden = $('#modalRegistroContraseñasNoCoinciden').modal('toggle');
       document.getElementById("contraseñaUsuario").value = "";
       document.getElementById("confirmarContraseñaUsuario").value = "";
       document.getElementById("contraseñaUsuario").focus();
@@ -47,26 +47,28 @@ function obtenerNoticias(){
     success: function(response){
       noticias = JSON.parse(response);
       for (let i = 0; i < noticias[1]; i ++){
-        if (noticias[2] == null || noticias[2] == ""){
+        if (noticias[2] == 'null' || noticias[2] == ""){
           document.getElementById("sectionNoticias").innerHTML += `
             <abbr title="Iniciá sesión para leer la noticia completa" style="text-decoration:transparent">
-              <section class="noticia">
-                <div class="divTituloNoticias">
-                  <h4 class="tituloNoticias" >${noticias[0][i][1]}</h4>
-                </div>
-                <div class="divContenidoNoticias">
-                  <p class="contenidoNoticias">${noticias[0][i][2]}</p>
-                </div>
-                <div class="divAutoresNoticias">
-                  <p class="autoresNoticias">${noticias[0][i][6]}</p>
-                </div>
-              </section>
+              <a class="nav-link" href="" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <section class="noticia">
+                  <div class="divTituloNoticias">
+                    <h4 class="tituloNoticias" >${noticias[0][i][1]}</h4>
+                  </div>
+                  <div class="divContenidoNoticias">
+                    <p class="contenidoNoticias">${noticias[0][i][2]}</p>
+                  </div>
+                  <div class="divAutoresNoticias">
+                    <p class="autoresNoticias">${noticias[0][i][6]}</p>
+                  </div>
+                </section>
+              </a>
             </abbr>
           `;
         }
         else{
           document.getElementById("sectionNoticias").innerHTML += `
-            <abbr class="etiquetaLeerNoticia" title="Leer noticia completa">
+            <abbr class="etiquetaLeerNoticia" title="Leer noticia completa" style="text-decoration:transparent">
               <a id="${noticias[0][i][0]}" class="botonDeNoticias" href="noticia/${noticias[0][i][0]}">
                 <section class="noticia">
                   <div class="divTituloNoticias">
@@ -127,7 +129,7 @@ function seleccionarFuncionEliminar(){
   for (let x = 0; x < document.getElementsByClassName("botonDeNoticias").length; x ++){
     document.getElementsByClassName("etiquetaLeerNoticia")[x].setAttribute('title', 'Hacé click para eliminar esta noticia')
     document.getElementsByClassName("botonDeNoticias")[x].removeAttribute('href');
-    document.getElementsByClassName("botonDeNoticias")[x].setAttribute('onclick', `eliminarNoticia(${document.getElementsByClassName("botonDeNoticias")[x].getAttribute("id")})`);
+    document.getElementsByClassName("botonDeNoticias")[x].setAttribute('onclick', `confirmarEliminarNoticia(${document.getElementsByClassName("botonDeNoticias")[x].getAttribute("id")})`);
     document.getElementById("alertaEliminarNoticia").setAttribute('style', 'border: 2px solid red; color: red;');
   }
   document.getElementById("etiquetaStyleHome").innerHTML = `
@@ -146,6 +148,11 @@ function cancelarEliminarNoticia(){
   document.getElementById("etiquetaStyleHome").innerHTML = "";
 }
 
+function confirmarEliminarNoticia(idPregunta){
+  myModal = $('#myModal').modal('toggle');
+  document.getElementById("confirmacionEliminarNoticia").setAttribute('onclick', `eliminarNoticia(${idPregunta})`);
+}
+  
 function eliminarNoticia(idPregunta){
   $.ajax({ 
     url:"/eliminarNoticia", 
@@ -161,15 +168,84 @@ function eliminarNoticia(idPregunta){
   });
 }
 
-function mostrarComentarios(){
+function mostrarComentarios(idUsuario, idNoticia){
   if (document.getElementById("comentarios").innerHTML == ""){ 
     document.getElementById("comentarios").innerHTML = `
-      <h4>Dejá acá tus comentarios:</h4>
-      <input type="text" placeholder="Escriba aquí..." required autofocus>
+      <h4 style="margin: 0px 2%;">Comentarios:</h4>
+      <br>
+      <span style="color:#FFFFFF; margin-bottom:12px;" id="spanComentario" class="input" role="textbox" name="titulo" contenteditable></span>
+      <br>
+      <a id="botonCancelarComentario" onclick="cancelarComentario()" style="margin-left:2%;">Cancelar</a>
+      <a id="botonAgregarComentario" onclick="agregarComentario(${idUsuario}, ${idNoticia})">Comentar</a>
+      <br>
+      <div id="comentariosPrevios"></div>
     `;
+    cargarComentariosPrevios(idNoticia);
   }
   else{
     document.getElementById("comentarios").innerHTML = "";
+  }
+}
+
+function cargarComentariosPrevios(idNoticia){
+  idNoticia = idNoticia;
+  $.ajax({
+    url:"/obtenerComentariosNoticia",
+    type:"POST",
+    data: {"idNoticia":idNoticia},
+    success: function(response){
+      data = JSON.parse(response);
+      for (let i = 0; i < data[0].length; i ++){
+        console.log(data);
+        switch (data[1][data[0][i][4]-1][3]){
+          case 'Info':
+            color = '#15e538';
+            break;
+          case 'Comu':
+            color = '#ff0f33';
+            break;
+          case 'Tecnica':
+            color = '#2458f5';
+            break;
+        }
+        document.getElementById("comentariosPrevios").innerHTML += `
+          <br>
+          <div class="comentario" style="margin: 0px; margin-right: -25px; width: 65vw; padding: 2%; float: right; background-color: rgba(0, 0, 0, .4);">
+            <p style="text-align: right; color: ${color};">${data[1][data[0][i][4]-1][1]}</p>
+            <h5 style="text-align: right;">${data[0][i][2]}</h5>
+          </div>
+          <br>
+        `;
+      }
+    },
+    error: function(error){
+      console.log(error);
+    },
+  });
+}
+
+function cancelarComentario(){
+  document.getElementById("spanComentario").textContent = "";
+}
+
+function agregarComentario(idUsuario, idNoticia, texto){
+  idUsuario = idUsuario;
+  idNoticia = idNoticia;
+  texto = document.getElementById("spanComentario").textContent;
+  if (texto != ""){
+    $.ajax({
+      url:"/agregarComentario",
+      type:"POST",
+      data: {"idUsuario":idUsuario, "idNoticia":idNoticia, "texto":texto},
+      success: function(response){
+        resultado = JSON.parse(response);
+      },
+      error: function(error){
+        console.log(error);
+      },
+    });
+    document.getElementById("spanComentario").textContent = "";
+    location.reload();
   }
 }
 
@@ -241,4 +317,138 @@ function verificarNoticiaLikeada(idUsuario, idNoticia){
       console.log(error);
     }, 
   }); 
+}
+
+function seleccionarFuncionEditar(){
+  htmlDivHome = document.getElementById("navBase").innerHTML;
+  document.getElementById("navBase").innerHTML = "";
+  htmlHomeSinModificar = document.getElementById("divHome").innerHTML;
+  document.getElementById("botonNuevaNoticia").outerHTML = "";
+  document.getElementById("botonEditarNoticia").outerHTML = "";
+  document.getElementById("botonEliminarNoticia").outerHTML = `
+    <a id="botonEliminarNoticia" onclick="cancelarEditarNoticia()">Cancelar</a>
+  `;
+  document.getElementById("tituloAdmin").outerHTML = `
+    <h3 id="alertaEliminarNoticia">Seleccioná la noticia que quieras editar</h3>
+  `;
+  for (let x = 0; x < document.getElementsByClassName("botonDeNoticias").length; x ++){
+    document.getElementsByClassName("etiquetaLeerNoticia")[x].setAttribute('title', 'Hacé click para editar esta noticia')
+    document.getElementsByClassName("botonDeNoticias")[x].setAttribute('href', `editorDeNoticias/${document.getElementsByClassName("botonDeNoticias")[x].getAttribute("id")}`);
+    document.getElementById("alertaEliminarNoticia").setAttribute('style', 'border: 2px solid #15e538; color: #15e538;');
+  }
+  document.getElementById("etiquetaStyleHome").innerHTML = `
+    .noticia:hover h4, .noticia:hover h6, .noticia:hover p{
+      color: #15e538;
+    }
+    .noticia:hover{
+      border: 2px solid #15e538;
+    }
+  `;
+}
+
+function cancelarEditarNoticia(){
+  document.getElementById("navBase").innerHTML = htmlDivHome;
+  document.getElementById("divHome").innerHTML = htmlHomeSinModificar;
+  document.getElementById("etiquetaStyleHome").innerHTML = "";
+}
+
+function prepararDatosParaEditar(idNoticia){
+  idNoticia = idNoticia;
+  $.ajax({
+    url:"/ajaxPrepararDatosParaEditar",
+    type:"POST",
+    data: {"idNoticia":idNoticia},
+    success: function(response){
+      noticia = JSON.parse(response);
+      document.getElementById("categoria").value = noticia[0][5];
+      document.getElementById("titulo").textContent = noticia[0][1];
+      document.getElementById("contenido").textContent = noticia[0][2];
+      document.getElementById("autor").value = noticia[0][6];
+    },
+    error: function(error){
+      console.log(error);
+    },
+  });
+}
+
+function guardarNoticiaEditada(idNoticia){
+  idNoticia = idNoticia;
+  categoria = document.getElementById("categoria").value;
+  titulo = document.getElementById("titulo").textContent;
+  contenido = document.getElementById("contenido").textContent;
+  autor = document.getElementById("autor").value;
+  $.ajax({
+    url:"/guardarNoticiaEditada",
+    type:"POST",
+    data: {"idNoticia":idNoticia, "categoria":categoria, "titulo":titulo, "contenido":contenido, "autor":autor},
+    success: function(response){
+      resultado = JSON.parse(response);
+      if (resultado == true){
+        document.getElementById("formEditarNoticia").submit();
+      }
+    },
+    error: function(error){
+      console.log(error);
+    },
+  });
+}
+
+function buscarNoticias(){
+  textoBuscar = document.getElementById("searchterm").value;
+  $.ajax({
+    url:"/buscarNoticias",
+    type:"POST",
+    data: {"textoBuscar":textoBuscar},
+    success: function(response){
+      noticiasEncontradas = JSON.parse(response);
+      document.getElementById("sectionNoticiasEncontradas").innerHTML = "";
+      for (let i = 0; i < noticiasEncontradas[1]; i ++){
+        if (noticiasEncontradas[2] == 'null' || noticiasEncontradas[2] == ""){
+          document.getElementById("sectionNoticiasEncontradas").innerHTML += `
+            <abbr title="Iniciá sesión para leer la noticia completa" style="text-decoration:transparent">
+              <section class="noticia">
+                <div class="divTituloNoticias">
+                  <h4 class="tituloNoticias" >${noticiasEncontradas[0][i][1]}</h4>
+                </div>
+                <div class="divContenidoNoticias">
+                  <p class="contenidoNoticias">${noticiasEncontradas[0][i][2]}</p>
+                </div>
+                <div class="divAutoresNoticias">
+                  <p class="autoresNoticias">${noticiasEncontradas[0][i][6]}</p>
+                </div>
+              </section>
+            </abbr>
+          `;
+        }
+        else{
+          document.getElementById("sectionNoticiasEncontradas").innerHTML += `
+            <abbr class="etiquetaLeerNoticia" title="Leer noticia completa" style="text-decoration:transparent">
+              <a id="${noticiasEncontradas[0][i][0]}" class="botonDeNoticias" href="noticia/${noticiasEncontradas[0][i][0]}">
+                <section class="noticia">
+                  <div class="divTituloNoticias">
+                    <h4 class="tituloNoticias">${noticiasEncontradas[0][i][1]}</h4>
+                  </div>
+                  <div class="divContenidoNoticias">
+                    <p class="contenidoNoticias">${noticiasEncontradas[0][i][2]}</p>
+                  </div>
+                  <div class="divAutoresNoticias">
+                    <p class="autoresNoticias">${noticiasEncontradas[0][i][6]}</p>
+                  </div>
+                </section>
+              </a>
+            </abbr>
+          `;
+        }
+      }
+    },
+    error: function(error){
+      console.log(error);
+    },
+  });
+}
+
+function mensajeNombreUsuarioYaUsado(mensaje){
+  if (mensaje == 1){
+    modalRegistroNombreYaTomado = $('#modalRegistroNombreYaTomado').modal('toggle');
+  }
 }

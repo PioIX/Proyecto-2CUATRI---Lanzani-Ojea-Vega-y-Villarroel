@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, session, jsonify
+from flask import Flask, render_template, request, redirect, session, jsonify, url_for
 import sqlite3
 import json
 import datetime
@@ -18,6 +18,15 @@ def obtenerNoticias():
   conn.close()
   return listaNoticias
 
+def obtenerUsuarios():
+  conn = sqlite3.connect('baseDeDatos.db')
+  resu = conn.execute(f"""SELECT * FROM Usuarios""")
+  listaUsuarios = []
+  for linea in resu:
+    listaUsuarios.append(linea)
+  conn.close()
+  return listaUsuarios
+
 @app.route('/')
 def index():
   return render_template('index.html', navActive = 1)
@@ -30,27 +39,33 @@ def home():
 def ajaxObtenerNoticias():
   if request.method == "GET":
     noticias = obtenerNoticias()
+    try: 
+      session['nombre']
+    except: 
+      session['nombre'] = 'null'
     return json.dumps([noticias, cantidadDeNoticias, session['nombre']])
   else:
    return render_template("home.html", navActive = 2)   
 
 @app.route('/buscar')
 def buscar():
-    return render_template('buscar.html', navActive = 3)
+  return render_template('buscar.html', navActive = 3)
 
 @app.route('/iniciarSesion')
 def iniciarSesion():
-    return render_template('iniciarSesion.html', navActive = 4)
+  return render_template('iniciarSesion.html', navActive = 4)
 
 @app.route('/verificarInicioSesion', methods=["POST"])
 def verificarInicioSesion():
   if request.method == "POST":
-    session['nombre'] = request.form["nombre"]
-    session['contraseña'] = request.form["contraseña"]
+    nombre = request.form["nombre"]
+    contraseña = request.form["contraseña"]
     conn = sqlite3.connect('baseDeDatos.db')
-    resu = conn.execute(f"""SELECT id FROM Usuarios WHERE nombre = '{session['nombre']}' AND contraseña = '{session['contraseña']}'""")
+    resu = conn.execute(f"""SELECT id FROM Usuarios WHERE nombre = '{nombre}' AND contraseña = '{contraseña}'""")
     if resu.fetchone():
       conn.close()
+      session['nombre'] = nombre
+      session['contraseña'] = contraseña
       return json.dumps(True)
     else:
       conn.close()
@@ -58,9 +73,9 @@ def verificarInicioSesion():
   else:
     return render_template('iniciarSesion.html')
 
-@app.route('/registro')
-def registro():
-  return render_template("registro.html", navActive = 0)
+@app.route('/registro/<int:mensaje>')
+def registro(mensaje):
+  return render_template("registro.html", navActive = 0, mensaje = mensaje)
 
 @app.route('/verificarRegistro', methods=["GET", "POST"])
 def verificarRegistro():
@@ -73,8 +88,7 @@ def verificarRegistro():
     resu = conn.execute(f"""SELECT id FROM Usuarios WHERE nombre = '{nombre}'""")
     if resu.fetchone():
       conn.close()
-      print("El nombre ya fue tomado por otro usuario")
-      return redirect('/registro')
+      return redirect(url_for('registro', mensaje = 1))
     else:
       if contraseña == confirmacionContraseña:
         resu = conn.execute(f"""INSERT INTO Usuarios (nombre, contraseña, carrera) VALUES ('{nombre}', '{contraseña}', '{carrera}')""")
@@ -90,6 +104,7 @@ def verificarRegistro():
 @app.route('/cerrarSesion')
 def cerrarSesion():
   session['nombre'] = ""
+  session['contraseña'] = ""
   return redirect('/')
 
 @app.route('/creadorDeNoticias', methods=["GET", "POST"])
@@ -141,7 +156,6 @@ def eliminarNoticia():
   else:
     return redirect("/home")
 
-
 @app.route('/ajaxGestionLikes', methods=["GET", "POST", "PUT"])
 def ajaxGestionLikes():
   if request.method == "PUT":
@@ -184,6 +198,97 @@ def verificarNoticiaLikeada():
       return json.dumps(False)
   else:
     return render_template("noticia.html")
+
+@app.route('/editorDeNoticias/<int:idNoticia>', methods=["GET", "POST"])
+def editorDeNoticias(idNoticia):
+  if session['nombre'] == "admin":
+    return render_template('editorDeNoticias.html', navActive = 5, idNoticia = idNoticia)
+  else:
+    return redirect('/')
+
+@app.route('/ajaxPrepararDatosParaEditar', methods=["GET", "POST"])
+def ajaxPrepararDatosParaEditar():
+  if request.method == "POST":
+    idNoticia = request.form["idNoticia"]
+    conn = sqlite3.connect('baseDeDatos.db')
+    resu = conn.execute(f"""SELECT * FROM Noticias WHERE id = {idNoticia}""")
+    noticia = []
+    for linea in resu:
+      noticia.append(linea)
+    conn.close()
+    return json.dumps(noticia)
+  else:
+    return render_template("editorDeNoticias.html")
+
+@app.route('/guardarNoticiaEditada', methods=["GET", "POST"])
+def guardarNoticiaEditada():
+  if request.method == "POST":
+    idNoticia = request.form["idNoticia"]
+    categoria = request.form["categoria"]
+    titulo = request.form["titulo"]
+    contenido = request.form["contenido"]
+    autor = request.form["autor"]
+    conn = sqlite3.connect('baseDeDatos.db')
+    conn.execute(f"""UPDATE Noticias SET titulo = '{titulo}', contenido = '{contenido}', categoria = '{categoria}', autor = '{autor}' WHERE id = {idNoticia}""")
+    conn.commit()
+    conn.close()
+    return json.dumps(True)
+  else:
+    return render_template('editorDeNoticias.html')
+
+@app.route('/agregarComentario', methods=["GET", "POST"])
+def agregarComentario():
+  if request.method == "POST":
+    idUsuario = request.form["idUsuario"]
+    idNoticia = request.form["idNoticia"]
+    texto = request.form["texto"]
+    conn = sqlite3.connect('baseDeDatos.db')
+    conn.execute(f"""INSERT INTO Comentarios (noticiaCorrespondiente, texto, likesComentario, usuarioCorrespondiente) VALUES ({idNoticia}, '{texto}', 0, {idUsuario})""")
+    conn.commit()
+    conn.close()
+    return json.dumps(True)
+  else:
+    return render_template('noticia.html')
+
+@app.route('/obtenerComentariosNoticia', methods=["GET", "POST"])
+def obtenerComentariosNoticia():
+  if request.method == "POST":
+    idNoticia = request.form["idNoticia"]
+    conn = sqlite3.connect('baseDeDatos.db')
+    resu = conn.execute(f"""SELECT * FROM Comentarios WHERE noticiaCorrespondiente = {idNoticia}""")
+    comentarios = []
+    for linea in resu:
+      comentarios.append(linea)
+    conn.close()
+    usuarios = obtenerUsuarios()
+    return json.dumps([comentarios, usuarios])
+  else:
+    return render_template('noticia.html')
+
+@app.route('/buscarNoticias', methods=["GET", "POST"])
+def buscarNoticias():
+  if request.method == "POST":
+    textoBuscar = request.form["textoBuscar"]
+    conn = sqlite3.connect('baseDeDatos.db')
+    resu = conn.execute(f"""SELECT * FROM Noticias WHERE titulo LIKE '%{textoBuscar}%'""")
+    noticiasEncontradas = []
+    for linea in resu:
+      noticiasEncontradas.append(linea)
+    resu = conn.execute(f"""SELECT * FROM Noticias WHERE contenido LIKE '%{textoBuscar}%'""")
+    for linea in resu:
+      if linea not in noticiasEncontradas:
+        noticiasEncontradas.append(linea)
+    resu = conn.execute(f"""SELECT * FROM Noticias WHERE autor LIKE '%{textoBuscar}%'""")
+    for linea in resu:
+      if linea not in noticiasEncontradas:
+        noticiasEncontradas.append(linea)
+    try: 
+      session['nombre']
+    except: 
+      session['nombre'] = 'null'
+    return json.dumps([noticiasEncontradas, cantidadDeNoticias, session['nombre']])
+  else:
+    return render_template('buscar.html')
 
 
 app.run(host='0.0.0.0', port=81)

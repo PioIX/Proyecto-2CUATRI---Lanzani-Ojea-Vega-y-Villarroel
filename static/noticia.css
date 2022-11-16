@@ -20,6 +20,13 @@ h1{
   text-align: left;
 }
 
+h5{
+  font-family: 'Raleway', 'sans-serif';
+  font-size: 19px;
+  color: white;
+  text-align: left;
+}
+
 h6{
   font-family: 'Raleway', 'sans-serif';
   font-size: 20px;
@@ -71,6 +78,56 @@ a:link, a:visited{
   text-decoration: transparent;
 }
 
+.input{
+  margin: 0px 2%;
+  min-width: 40%;
+  max-width: 80%;
+  display: inline-block;
+  border: 1px solid #ababab;
+  border-radius: 5px;
+  color: black;
+  padding: 4px 6px;
+}
+
+span[contenteditable]:empty:focus::before, span[contenteditable]:empty::before{
+  content: 'Dejá tu comentario...';
+}
+
+span{
+  color: white;
+}
+
+#botonCancelarComentario{
+  width: 5%;
+  margin: 0px;
+  border: 1px solid white;
+  border-radius: 5px;
+  color: white;
+  text-decoration: none;
+  padding: 0.7% 1%;
+}
+
+#botonCancelarComentario:hover{
+  background-color: white;
+  color: black;
+}
+
+#botonAgregarComentario{
+  width: 5%;
+  margin: 0px;
+  border: 1px solid #326dcd;
+  border-radius: 5px;
+  background-color: #326dcd;
+  color: white;
+  text-decoration: none;
+  padding: 0.7% 1%;
+}
+
+#botonAgregarComentario:hover{
+  border: 1px solid #1d3d72;
+  background-color: #1d3d72;
+}
+
 #divNoticia{
   min-height: calc(100vh - 42px);
   width: 65vw;
@@ -103,13 +160,6 @@ pre{
   margin-top: calc((100% / 2) - 58px);
 }
 
-input{
-  border: 2px solid black;
-  background-color: white;
-  border-radius: 10px;
-  width: 400px;
-}
-
 h4{
   color: white;
   font-size: 35px;
@@ -123,4 +173,9 @@ a{
 
 label{
   color: white;
+
+#comentarios{
+  width: 80%;
+  position: absolute;
+  left: 0;
 }

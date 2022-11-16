@@ -182,15 +182,30 @@ a{
   margin-bottom: 60px;
 }
 
-#myModal .modal-dialog .modal-content .modal-body p{
-  font-size: 16px;
+#searchterm{
+  width: 40vw;
+  margin: 0% 0% 0% 2vw;
+  padding: 5px 10px;
+  color: white;
+  background-color: rgba(0, 0, 0, .2);
+  border: 2px solid #f0f0f0;
+  border-radius: 8px;
 }
 
-#myModal .modal-dialog .modal-content .modal-header h5{
-  font-size: 19px;
-  text-align: center;
+#searchterm::placeholder{
+  color: #a8a8a8;
 }
 
-#modalContentHome {
-  border: 1px solid white;
+#search{
+  border: 2px solid white;
+  border-radius: 8px;
+  color: white;
+  text-decoration: none;
+  padding: 5px 8px;
+  background-color: transparent;
+}
+
+#search:hover{
+  background-color: white;
+  color: black;
 }

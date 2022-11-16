@@ -17,7 +17,7 @@
     <h1 id="tituloAdmin">Noticias</h1>
     <div class="botones">
       <a id="botonNuevaNoticia" href="{{url_for('creadorDeNoticias')}}">Nueva Noticia</a>
-      <a id="botonEditarNoticia" href="">Editar Noticia</a>
+      <a id="botonEditarNoticia" onclick="seleccionarFuncionEditar()">Editar Noticia</a>
       <a id="botonEliminarNoticia" onclick="seleccionarFuncionEliminar()">Eliminar Noticia</a>
     </div>
     <br><br><br>
@@ -27,5 +27,23 @@
       <section id="sectionNoticias" class="noticias"></section>
     </div>
   </div>
+  
+  <div class="modal" tabindex="-1" id="myModal">
+    <div class="modal-dialog">
+      <div class="modal-content" id="modalContentHome">
+        <div class="modal-header">
+          <h5 class="modal-title text-white">¿Estás seguro de que querés eliminar esta noticia?</h5>
+        </div>
+        <div class="modal-body">
+          <p class="text-light">Advertencia: una vez que la noticia sea eliminada, no habrá forma de recuperarla</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-success" id="confirmacionEliminarNoticia">Confirmar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
 </center>
 {% endblock %}

@@ -1,3 +1,12 @@
 {
-  "files": {}
+  "files": {
+    "static/script.js": [
+      {
+        "id": "13a8fa3f-5346-4bfa-a0f3-9890479dd6e9",
+        "line": 247,
+        "version": 9152,
+        "index": 9070
+      }
+    ]
+  }
 }

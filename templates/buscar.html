@@ -1,9 +1,6 @@
 {% extends 'base.html' %}
 
-{% block stylesheet %}
-<link rel="stylesheet" href="static/styles.css">
-<link rel="stylesheet" href="static/home.css">
-{% endblock %}
+{% block stylesheet %}<link rel="stylesheet" href="static/buscar.css">{% endblock %}
 
 {% block title %}Buscar{% endblock %}
 
@@ -11,7 +8,9 @@
 
 {% block body %}
 <div class="field" id="searchform">
-  <input class="buscarNoticia" type="text" id="searchterm" placeholder="Buscar noticia" />
-  <button class="botonBuscarNoticia" type="button" id="search">Buscar</button>
+  <input class="buscarNoticia" type="text" id="searchterm" placeholder="Escribe parte del título, contenido o autor..." />
+  <button class="botonBuscarNoticia" type="button" id="search" onclick="buscarNoticias()">Buscar</button>
+  <br><br>
+  <section id="sectionNoticiasEncontradas" class="noticias"></section>
 </div>
 {% endblock %}

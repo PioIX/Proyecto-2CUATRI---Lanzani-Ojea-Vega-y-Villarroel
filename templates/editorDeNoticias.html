@@ -1,17 +1,17 @@
 {% extends 'base.html' %}
 
-{% block stylesheet %}<link rel="stylesheet" href="static/creadorDeNoticias.css">{% endblock %}
+{% block stylesheet %}<link rel="stylesheet" href="../static/editorDeNoticias.css">{% endblock %}
 
-{% block title %}Creador de Noticias{% endblock %}
+{% block title %}Editor de Noticias{% endblock %}
 
-{% block atributosBody %}{% endblock %}
+{% block atributosBody %}onload="prepararDatosParaEditar({{idNoticia}})"{% endblock %}
 
 {% block body %}
 <div style="margin-left:25px;">
   <div id="divRegistro">
-    <h1>Creador de Noticias</h1>
+    <h1>Editor de Noticias</h1>
     <br>
-    <form id="formNuevaNoticia" method="POST" action="/creadorDeNoticias">
+    <form id="formEditarNoticia" method="POST" action="/home">
       <div class="inputRegistro">
         <label for="categoria" class="labelNuevaNoticia">Categoría</label>
         <select id="categoria" name="categoria">
@@ -36,7 +36,7 @@
         <input type="text" id="autor" name="autor" placeholder="Firma del autor...">
       </div>
       <br><br>
-      <input id="botonAgregarNoticia" type="button" value="Agregar Noticia" onclick="agregarNuevaNoticia()">
+      <input id="botonAgregarNoticia" type="button" value="Guardar Noticia Editada" onclick="guardarNoticiaEditada({{idNoticia}})">
     </form>
   </div>
 </div>
