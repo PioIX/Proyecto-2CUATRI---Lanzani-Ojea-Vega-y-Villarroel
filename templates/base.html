@@ -24,7 +24,7 @@
         <li class="nav-item">
           <a class="nav-link {% if navActive == 3 %}active{% endif %}" href="{{url_for('buscar')}}">Buscar</a>
         </li>
-        {% if session['nombre'] == null or session['nombre'] == "" %}
+        {% if session['nombre'] == null or session['nombre'] == 'null' or session['nombre'] == "" %}
           <li class="nav-item">
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                 aria-hidden="true">

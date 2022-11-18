@@ -156,6 +156,18 @@ def eliminarNoticia():
   else:
     return redirect("/home")
 
+@app.route('/eliminarComentario', methods=["DELETE"])
+def eliminarComentario():
+  if request.method== "DELETE":
+    idComentario = request.form["idComentario"]
+    conn = sqlite3.connect('baseDeDatos.db')
+    conn.execute(f"""DELETE FROM Comentarios WHERE id = {idComentario}""")
+    conn.commit()
+    conn.close()
+    return json.dumps(True)
+  else:
+    return redirect("/home")
+
 @app.route('/ajaxGestionLikes', methods=["GET", "POST", "PUT"])
 def ajaxGestionLikes():
   if request.method == "PUT":

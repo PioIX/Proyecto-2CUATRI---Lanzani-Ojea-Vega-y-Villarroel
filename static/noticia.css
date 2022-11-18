@@ -179,3 +179,8 @@ label{
   position: absolute;
   left: 0;
 }
+
+#modalContentConfirmarEliminarComentario{
+  border: 1px solid white;
+  position: sticky;
+}

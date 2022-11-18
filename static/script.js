@@ -180,15 +180,16 @@ function mostrarComentarios(idUsuario, idNoticia){
       <br>
       <div id="comentariosPrevios"></div>
     `;
-    cargarComentariosPrevios(idNoticia);
+    cargarComentariosPrevios(idNoticia, idUsuario);
   }
   else{
     document.getElementById("comentarios").innerHTML = "";
   }
 }
 
-function cargarComentariosPrevios(idNoticia){
+function cargarComentariosPrevios(idNoticia, idUsuario){
   idNoticia = idNoticia;
+  idUsuario = idUsuario;
   $.ajax({
     url:"/obtenerComentariosNoticia",
     type:"POST",
@@ -196,7 +197,37 @@ function cargarComentariosPrevios(idNoticia){
     success: function(response){
       data = JSON.parse(response);
       for (let i = 0; i < data[0].length; i ++){
-        console.log(data);
+        if (idUsuario == data[0][i][4]){
+          paddingOpcional = `padding-bottom: 5%;`;
+          agregado = `
+              <a class="botonEliminarComentario" onclick="confirmarEliminarComentario(${data[0][i][0]})">Eliminar</a>
+            </div>
+            <br>
+          `;
+        }
+        else{
+          paddingOpcional = `padding-bottom: 1%;`;
+          agregado = `
+            </div>
+            <br>
+          `;
+        }
+        document.getElementById("etiquetaStyleComentarios").innerHTML = `
+          .botonEliminarComentario{
+            position: absolute;
+            right: 0;
+            margin-right: 2%;
+            background-color: transparent;
+            border: 2px solid white;
+            color: white;
+            border-radius: 7px;
+            padding: 2px 8px;
+          }
+          .botonEliminarComentario:hover{
+            background-color: white;
+            color: black;
+          }
+        `;
         switch (data[1][data[0][i][4]-1][3]){
           case 'Info':
             color = '#15e538';
@@ -210,11 +241,10 @@ function cargarComentariosPrevios(idNoticia){
         }
         document.getElementById("comentariosPrevios").innerHTML += `
           <br>
-          <div class="comentario" style="margin: 0px; margin-right: -25px; width: 65vw; padding: 2%; float: right; background-color: rgba(0, 0, 0, .4);">
+          <div class="comentario" style="margin: 0px; margin-right: -25px; width: 65vw; padding: 2%; ${paddingOpcional} float: right; background-color: rgba(0, 0, 0, .4);">
             <p style="text-align: right; color: ${color};">${data[1][data[0][i][4]-1][1]}</p>
             <h5 style="text-align: right;">${data[0][i][2]}</h5>
-          </div>
-          <br>
+          ${agregado}
         `;
       }
     },
@@ -247,6 +277,27 @@ function agregarComentario(idUsuario, idNoticia, texto){
     document.getElementById("spanComentario").textContent = "";
     location.reload();
   }
+}
+
+function confirmarEliminarComentario(idComentario){
+  modalConfirmarEliminarComentario = $('#modalConfirmarEliminarComentario').modal('toggle');
+  document.getElementById("confirmacionEliminarComentario").setAttribute('onclick', `eliminarComentario(${idComentario})`);
+}
+
+function eliminarComentario(idComentario){
+  idComentario = idComentario;
+  $.ajax({ 
+    url:"/eliminarComentario", 
+    type:"DELETE", 
+    data: {"idComentario":idComentario},
+    success: function(response){
+      datos = JSON.parse(response);
+      location.reload();
+    },
+    error: function(error){ 
+      console.log(error);
+    }, 
+  });
 }
 
 function darLike(idNoticia, idUsuario){

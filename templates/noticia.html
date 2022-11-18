@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 
-{% block stylesheet %}<link rel="stylesheet" href="../static/noticia.css">{% endblock %}
+{% block stylesheet %}
+<link rel="stylesheet" href="../static/noticia.css">
+<style id="etiquetaStyleComentarios"></style>
+{% endblock %}
 
 {% block title %}Noticia{% endblock %}
 
@@ -37,5 +40,21 @@
   <br><br>
   <div id="comentarios" class="comentarios"></div>
   <br>
+</div>
+<div class="modal" tabindex="-1" id="modalConfirmarEliminarComentario">
+  <div class="modal-dialog">
+    <div class="modal-content" id="modalContentConfirmarEliminarComentario">
+      <div class="modal-header">
+        <h5 class="modal-title text-white">¿Estás seguro de que querés eliminar este comentario?</h5>
+      </div>
+      <div class="modal-body">
+        <p class="text-light">Advertencia: una vez que sea eliminado, no habrá forma de recuperarlo</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-success" id="confirmacionEliminarComentario">Confirmar</button>
+      </div>
+    </div>
+  </div>
 </div>
 {% endblock %}

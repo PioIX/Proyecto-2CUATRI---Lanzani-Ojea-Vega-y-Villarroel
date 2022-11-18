@@ -3,9 +3,23 @@
     "static/script.js": [
       {
         "id": "13a8fa3f-5346-4bfa-a0f3-9890479dd6e9",
-        "line": 247,
-        "version": 9152,
-        "index": 9070
+        "line": 203,
+        "version": 10090,
+        "index": 7876
+      }
+    ],
+    "templates/noticia.html": [
+      {
+        "id": "2e8d5711-aa3c-4c9e-86af-e2d80d01c457",
+        "line": 42,
+        "version": 2080,
+        "index": 1572
+      },
+      {
+        "id": "9b7bd54d-02ff-49db-b74d-bba9e023862e",
+        "line": 42,
+        "version": 2080,
+        "index": 1578
       }
     ]
   }
